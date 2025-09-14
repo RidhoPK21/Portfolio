@@ -1,0 +1,518 @@
+@use 'sass:color'; // 👈 1. Tambahkan baris ini di paling atas
+
+//=========================================
+// VARIABLES
+//=========================================
+// FONT
+$font-family: "Inter", "Arial", sans-serif;
+
+// COLORS
+$primary-color: #4361ee;
+$primary-color-dark: #3a56d4;
+$secondary-color: #2ecc71;
+// Diubah dari darken($secondary-color, 10%)
+$secondary-color-dark: color.adjust($secondary-color, $lightness: -10%); // 👈 2. Perbaikan
+
+$text-dark: #2d3748;
+$text-light: #a0aec0;
+$background-light: #f8f9fa;
+$background-dark: #2d3748;
+$white: #ffffff;
+$border-color: rgba(160, 174, 192, 0.2);
+
+// STYLING
+$border-radius: 0.5rem;
+$box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$transition: all 0.3s ease;
+
+// BREAKPOINTS
+$breakpoint-lg: 1280px;
+$breakpoint-md: 768px;
+$breakpoint-sm: 640px;
+
+
+//=========================================
+// MIXINS
+//=========================================
+@mixin button-style($bg-color: $primary-color, $text-color: $white) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: $bg-color;
+  color: $text-color;
+  border: 2px solid $bg-color;
+  padding: 0.75rem 1.5rem;
+  border-radius: $border-radius;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: $transition;
+
+  &:hover {
+    // Diubah dari darken($bg-color, 10%)
+    background-color: color.adjust($bg-color, $lightness: -10%); // 👈 3. Perbaikan
+    border-color: color.adjust($bg-color, $lightness: -10%);     // 👈 4. Perbaikan
+    transform: translateY(-2px);
+    box-shadow: $box-shadow;
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+@mixin card-style {
+  background-color: $white;
+  border-radius: $border-radius;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+  transition: $transition;
+  height: 100%;
+
+  &:hover {
+    box-shadow: $box-shadow;
+    transform: translateY(-5px);
+  }
+}
+
+
+//=========================================
+// BASE & GENERAL STYLES
+//=========================================
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  font-family: $font-family;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: $text-dark;
+  overflow-x: hidden;
+  background-color: $white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section {
+  padding: 4rem 0;
+  width: 100%;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  p {
+    color: $text-light;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+// Responsive containers and titles
+@media (max-width: $breakpoint-md) {
+  .container {
+    padding: 0 1rem;
+  }
+  .section {
+    padding: 3rem 0;
+  }
+  .section-title h2 {
+    font-size: 1.75rem;
+  }
+}
+
+
+//=========================================
+// HEADER
+//=========================================
+.header {
+  background: $white;
+  color: $text-dark;
+  padding: 1.5rem 0;
+  box-shadow: $box-shadow;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: $primary-color;
+      text-decoration: none;
+    }
+
+    .nav {
+      display: flex;
+      gap: 2rem;
+      a {
+        color: $text-dark;
+        text-decoration: none;
+        font-weight: 500;
+        transition: $transition;
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+
+  // Responsive header
+  @media (max-width: $breakpoint-md) {
+    .header-content {
+      .nav {
+        display: none; // Simplifikasi untuk mobile, bisa diganti dengan menu hamburger
+      }
+    }
+  }
+}
+
+
+//=========================================
+// HERO SECTION
+//=========================================
+.hero {
+  background-color: $background-light;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 100px; // Offset untuk header
+
+  .hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+
+    .hero-text {
+      flex: 1;
+      h1 {
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        span {
+          color: $primary-color;
+        }
+      }
+      p {
+        font-size: 1.25rem;
+        color: $text-light;
+        margin-bottom: 2rem;
+      }
+      .hero-buttons {
+        display: flex;
+        gap: 1rem;
+        .primary-button {
+          @include button-style($primary-color, $white);
+        }
+        .secondary-button {
+          @include button-style($white, $primary-color);
+        }
+      }
+    }
+
+    .hero-image {
+      flex-basis: 350px;
+      img {
+        width: 100%;
+        height: auto;
+        border-radius: 50%;
+        border: 8px solid $white;
+        box-shadow: $box-shadow;
+      }
+    }
+  }
+  
+  // Responsive hero
+  @media (max-width: $breakpoint-md) {
+    .hero-content {
+      flex-direction: column-reverse;
+      text-align: center;
+      .hero-text {
+        h1 { font-size: 2.25rem; }
+        p { font-size: 1.125rem; }
+        .hero-buttons {
+          justify-content: center;
+        }
+      }
+      .hero-image {
+        margin-bottom: 2rem;
+        flex-basis: 280px;
+      }
+    }
+  }
+}
+
+
+//=========================================
+// RESUME SECTION
+//=========================================
+.resume-section {
+  .timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+
+    // Garis vertikal
+    &::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      background-color: $primary-color;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -2px;
+    }
+
+    .timeline-item {
+      padding: 1rem 3rem;
+      position: relative;
+      width: 50%;
+
+      // Lingkaran pada timeline
+      &::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        right: -10px;
+        background-color: $white;
+        border: 4px solid $primary-color;
+        top: 20px;
+        border-radius: 50%;
+        z-index: 1;
+      }
+
+      &.left {
+        left: 0;
+        padding-right: 40px;
+      }
+
+      &.right {
+        left: 50%;
+        &::after {
+          left: -10px;
+        }
+      }
+      
+      .timeline-content {
+        @include card-style;
+        padding: 1.5rem;
+        position: relative;
+        h3 {
+          margin-bottom: 0.25rem;
+          color: $primary-color;
+        }
+        .date {
+          font-style: italic;
+          color: $text-light;
+          font-size: 0.9rem;
+          margin-bottom: 0.5rem;
+        }
+      }
+    }
+  }
+  
+  // Responsive timeline
+  @media (max-width: $breakpoint-md) {
+    .timeline {
+      &::after {
+        left: 15px;
+      }
+      .timeline-item {
+        width: 100%;
+        padding-left: 50px;
+        padding-right: 1rem;
+        &.left, &.right {
+          left: 0;
+        }
+        &::after {
+          left: 6px;
+        }
+      }
+    }
+  }
+}
+
+
+//=========================================
+// SKILLS & CERTIFICATES SECTION
+//=========================================
+.skills-section {
+  background-color: $background-light;
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .skill-card {
+    @include card-style;
+    text-align: center;
+    padding: 1.5rem 1rem;
+
+    i {
+      font-size: 3rem;
+      color: $primary-color;
+      margin-bottom: 1rem;
+    }
+    
+    h3 {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+  }
+
+  .certificates-list {
+    text-align: center;
+    margin-top: 3rem;
+    h3 {
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+    ul {
+        list-style: none;
+        li {
+            margin-bottom: 0.5rem;
+            color: $text-light;
+            a {
+                color: $primary-color;
+                text-decoration: none;
+                font-weight: 500;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+  }
+}
+
+
+//=========================================
+// PORTFOLIO SECTION
+//=========================================
+.portfolio-section {
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .project-card {
+    @include card-style;
+    padding: 0;
+    overflow: hidden;
+
+    .project-image {
+      img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+      }
+    }
+
+    .project-info {
+      padding: 1.5rem;
+      h3 {
+        margin-bottom: 0.5rem;
+      }
+      p {
+        color: $text-light;
+        margin-bottom: 1.5rem;
+      }
+      .project-links {
+        display: flex;
+        gap: 1rem;
+        a {
+          @include button-style($secondary-color, $white);
+          font-size: 0.9rem;
+          padding: 0.5rem 1rem;
+        }
+      }
+    }
+  }
+}
+
+
+//=========================================
+// FOOTER
+//=========================================
+.footer {
+  background-color: $background-dark;
+  color: rgba($white, 0.8);
+  padding: 3rem 0;
+
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .footer-logo {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: $white;
+    }
+    p {
+      max-width: 500px;
+      margin-bottom: 1.5rem;
+    }
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      a {
+        color: rgba($white, 0.8);
+        font-size: 1.5rem;
+        transition: $transition;
+        &:hover {
+          color: $primary-color;
+          transform: translateY(-3px);
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba($white, 0.1);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+}
